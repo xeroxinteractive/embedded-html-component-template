@@ -1,0 +1,23 @@
+{
+  "name": "custom-html5-component-base",
+  "version": "0.0.1",
+  "description": "A base gulp template for working on xerox.com custom html5 components",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul Hawxby (xerox)",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-jshint": "^2.0.1",
+    "gulp-live-server": "0.0.30",
+    "gulp-sass": "^2.3.2",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.2.0",
+    "jshint": "^2.9.2",
+    "opn": "^4.0.2",
+    "run-sequence": "^1.2.2"
+  }
+}
