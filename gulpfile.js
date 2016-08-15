@@ -1,13 +1,16 @@
 "use strict";
-var gulp = require('gulp');
-var gls = require('gulp-live-server');
-var sass = require('gulp-sass');
-var gutil = require('gulp-util');
-var opn = require('opn');
-var jshint = require('gulp-jshint');
-var clean = require('gulp-clean');
+var gulp        = require('gulp');
+var gls         = require('gulp-live-server');
+var sass        = require('gulp-sass');
+var gutil       = require('gulp-util');
+var opn         = require('opn');
+var jshint      = require('gulp-jshint');
+var clean       = require('gulp-clean');
 var runSequence = require('run-sequence');
-var zip = require('gulp-zip');
+var zip         = require('gulp-zip');
+var cheerio     = require('gulp-cheerio');
+var replace     = require('gulp-replace');
+var rename      = require("gulp-rename");
 
 /* ------------------------------------------------- */
 
@@ -59,12 +62,13 @@ gulp.task('serve', ['watch'], function() {
 
 /* ------------------------------------------------- */
 
-gulp.task('dist', ['clean', 'dist:move-source', 'dist:zip-assets', 'dist:move-html'], function(cb) {
+gulp.task('dist', function(cb) {
   runSequence(
     ['clean'],
     ['sass', 'lint'],
     ['dist:move-source', 'dist:zip-assets', 'dist:move-html'],
     ['dist:zip-dist'],
+    ['dist:clean-dist'],
     cb);
 });
 
@@ -81,11 +85,48 @@ gulp.task('dist:zip-assets', function() {
 
 gulp.task('dist:move-html', function() {
   return gulp.src(['./*.html'])
+    .pipe(cheerio({
+        "run" : function ($, file) {
+          $('[data-xrxremove]').remove();
+
+          var pathsRelative = function(index, attr) {
+            if (attr)
+            {
+              if (attr.indexOf("http") !== 0 && attr.indexOf("/") !== 0)
+              {
+                return "~/" + attr;
+              }
+            }
+
+            return attr;
+          };
+          
+          $('link').attr("href", pathsRelative);
+          $('script,img').attr("src", pathsRelative);
+
+          $('head').children().prependTo("html");
+          $('body').children().appendTo("html");
+          $('head').remove();
+          $('body').remove();
+          $('html').replaceWith("<div>" + $('html').html() + "</div>")
+
+          return this;
+      },
+      "parserOptions": {
+        "decodeEntities" : false
+      }
+      }))
+    .pipe(replace('<!DOCTYPE html>', ''))
     .pipe(gulp.dest('./dist/prepared/'));
 });
 
 gulp.task('dist:zip-dist', function() {
   return gulp.src(['./dist/**/*'])
     .pipe(zip('dist.zip'))
-    .pipe(gulp.dest('./'));
+    .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('dist:clean-dist', function() {
+  return gulp.src(['./dist/prepared', './dist/source'], {read: false})
+        .pipe(clean());
 });

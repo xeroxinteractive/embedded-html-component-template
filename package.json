@@ -10,9 +10,12 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-cheerio": "^0.6.2",
     "gulp-clean": "^0.3.2",
     "gulp-jshint": "^2.0.1",
     "gulp-live-server": "0.0.30",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.3.2",
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
