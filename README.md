@@ -26,6 +26,14 @@ This repo is a gulp project and it provides a number of helpful commands to help
 ### Customisations
 Feel free to customise this project as you see fit, if you prefer to use less, coffeescript, typescript, whatever we're not too concerned so long as the deliverable remains to the same standard. 
 
+### `gulp dist`
+
+The `gulp dist` task creates a zip and html file ready for uploading into Drupal. This does not change your source but it will perform the following: 
+
+* Any nodes with the `data-xrxremove` attribute will be removed
+* Relative paths will be updated from `images/foo.jpg` to `~/images/foo.jpg` to make the compatible with Drupal
+* As we don't require `head`, `body`, `html` or doctype they will be removed
+
 ## General Guidance
 * All html should be wrapped in [a unique class](https://github.com/xeroxinteractive/embedded-html-component-template/blob/master/index.html#L15) or id referencing the agency that wrote the code allowing css to be prefixed preventing it impacting the wider site design.
 * All css should [make use of the above prefix](https://github.com/xeroxinteractive/embedded-html-component-template/blob/master/sass/core.scss#L1) and should ideally be written in sass or less for easy final editing and tweaks
@@ -43,3 +51,4 @@ Feel free to customise this project as you see fit, if you prefer to use less, c
 * Wherever possible CSS animations should be used over javascript animations for improved device performance.
 * You do not need to worry about concating or minification of CSS or Javascript, our tooling will do that on the fly. However all css and javascript must be compiled for delivery
 * Ideally gulp / grunt processes should be used.
+* Paths to local files should be relative and they will be converted to be Drupal compatible during the `gulp dist` process
