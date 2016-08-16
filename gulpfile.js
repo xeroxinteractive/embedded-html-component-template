@@ -65,10 +65,17 @@ gulp.task('serve', ['watch'], function() {
 gulp.task('dist', function(cb) {
   runSequence(
     ['clean'],
-    ['sass', 'lint'],
-    ['dist:move-source', 'dist:zip-assets', 'dist:move-html'],
+    ['dist:build'],
     ['dist:zip-dist'],
     ['dist:clean-dist'],
+    cb);
+});
+
+gulp.task('dist:build', function(cb) {
+  runSequence(
+    ['clean'],
+    ['sass', 'lint'],
+    ['dist:move-source', 'dist:zip-assets', 'dist:move-html'],
     cb);
 });
 
