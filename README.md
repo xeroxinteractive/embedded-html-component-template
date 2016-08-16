@@ -26,6 +26,8 @@ This repo is a gulp project and it provides a number of helpful commands to help
 ### Customisations
 Feel free to customise this project as you see fit, if you prefer to use less, coffeescript, typescript, whatever we're not too concerned so long as the deliverable remains to the same standard. 
 
+A normalizer and default Xerox font styling is included in this project, we recommend keeping this during development so you have a rough idea what our base styling will be so you can override as necessary. Before delivery these references will need to be stripped out, this will be done automatically by `gulp dist` if you use it.
+
 ### `gulp dist`
 
 The `gulp dist` task creates a zip and html file ready for uploading into Drupal. This does not change your source but it will perform the following: 
