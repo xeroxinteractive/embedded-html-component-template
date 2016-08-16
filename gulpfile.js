@@ -91,6 +91,9 @@ gulp.task('dist:zip-assets', function() {
 });
 
 gulp.task('dist:move-html', function() {
+  var depth = 0;
+  var voidElements = ["meta", "img", "link", "br", "param", "input", "hr", "col", "area"];
+
   return gulp.src(['./*.html'])
     .pipe(cheerio({
         "run" : function ($, file) {
@@ -124,6 +127,40 @@ gulp.task('dist:move-html', function() {
       }
       }))
     .pipe(replace('<!DOCTYPE html>', ''))
+    .pipe(replace(/(\n|\r|  )/g, ''))
+    .pipe(replace(/<([/]?)([a-zA-Z]*)[^>]*([/]?)>/g, function(search, openSlash, tag, closeSlash) {
+      tag = tag.toLowerCase();
+      var isVoidElement = voidElements.indexOf(tag) > -1;
+      var isOpenTag = !openSlash;
+      var isCloseTag = !!closeSlash || !!openSlash;
+      var isEmptyElement = false;
+
+      isEmptyElement = isEmptyElement || (tag == "script" && search.indexOf("src=") > -1);
+
+      if (isOpenTag) {
+        depth++;
+      }
+      if (isCloseTag || isVoidElement) {
+        depth--;
+      }
+
+      if (!isEmptyElement) 
+      {
+        if (isCloseTag) {
+          if (depth > 0) {
+            search = "  ".repeat(depth) + search;
+          }
+          search = "\n" + search;
+        }
+
+        search += "\n";
+        if (depth > 0) {
+          search += "  ".repeat(depth);
+        }
+      }
+      
+      return search;
+    }))
     .pipe(gulp.dest('./dist/prepared/'));
 });
 
