@@ -137,6 +137,20 @@ gulp.task('dist:move-html', function() {
           
           $('link').attr("href", pathsRelative);
           $('script,img').attr("src", pathsRelative);
+          $('video').attr("poster", pathsRelative);
+          $('source').attr("src", pathsRelative);
+
+          var stylesRelative = function(index, attr) {
+            if (attr)
+            {
+              var styles = attr.split(";");
+
+              attr = attr.replace(/url\('images\//g, "url('~/images/").replace(/url\("images\//g, "url(\"~/images/");
+            }
+
+            return attr;
+          };
+          $('*').attr("style", stylesRelative);
 
           $('head').children().prependTo("html");
           $('body').children().appendTo("html");

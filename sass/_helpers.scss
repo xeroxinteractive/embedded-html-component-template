@@ -1,0 +1,70 @@
+$screen-xs-min:                  480px !default;
+$screen-sm-min:                  768px !default;
+$screen-md-min:                  970px !default;
+
+$color-brand-red: #D92231;
+$color-white: #fff;
+$color-gray-33: #333333;
+
+$font : 'Roboto', sans-serif;
+$font-secondary : 'Roboto Condensed', sans-serif;
+
+@mixin breakpoint($point)
+{
+  @if $point == screen-md {
+    @media screen and (min-width: $screen-md-min) { @content ; }
+  }
+  @else if $point == screen-xs {
+     @media screen and (min-width: $screen-xs-min) { @content ; }
+  }
+   @else if $point == screen-sm {
+     @media screen and (min-width: $screen-sm-min) { @content ; }
+  }
+}
+
+@mixin breakpoint-between($start: null, $end: null)
+{
+  $min: null;
+  $max: null;
+
+  @if $start == screen-xs {
+    $min: $screen-xs-min;
+  }
+  @else if $start == screen-sm {
+    $min: $screen-sm-min;
+  }
+  @else if $start == screen-md {
+    $min: $screen-md-min;
+  }
+
+  @if $end == screen-xs {
+    $max: $screen-xs-min - 1;
+  }
+  @else if $end == screen-sm {
+    $max: $screen-sm-min - 1;
+  }
+  @else if $end == screen-md {
+    $max: $screen-md-min - 1;
+  }
+
+  @if ($min and $max)
+  {
+    @media screen and (min-width: $min) and (max-width: $max) { @content ; }
+  }
+  @else if ($min)
+  {
+    @media screen and (min-width: $min) { @content ; }
+  }
+  @else if ($max)
+  {
+    @media screen and (max-width: $max) { @content ; }
+  }
+}
+
+@mixin breakpoint-max($end: null)
+{
+  @include breakpoint-between(null, $end)
+  {
+    @content;
+  }
+}
