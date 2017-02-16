@@ -11,6 +11,9 @@ var zip         = require('gulp-zip');
 var cheerio     = require('gulp-cheerio');
 var replace     = require('gulp-replace');
 var rename      = require("gulp-rename");
+var cssnano     = require('gulp-cssnano');
+
+var BROWSERS          = ["last 2 versions", "> 5% in US", "ie 11"];
 
 /* ------------------------------------------------- */
 
@@ -36,6 +39,27 @@ gulp.task('watch:lint', function() {
 gulp.task('sass', function () {
   return gulp.src('./sass/**/*.scss')
     .pipe(sass().on('error', gutil.log))
+    .pipe(cssnano({
+      zindex: false,
+      core: false,
+      mergeRules: false,
+      discardComments: false,
+      autoprefixer: {
+        browsers : BROWSERS,
+        add: true,
+        remove: true
+      }
+    }))
+    .pipe(gulp.dest('./css'))
+    .pipe(cssnano({
+      zindex: false,
+      autoprefixer: {
+        browsers : BROWSERS,
+        add: true,
+        remove: true
+      }
+    }))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('./css'));
 });
  
