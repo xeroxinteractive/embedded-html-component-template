@@ -12,6 +12,7 @@ var cheerio     = require('gulp-cheerio');
 var replace     = require('gulp-replace');
 var rename      = require("gulp-rename");
 var cssnano     = require('gulp-cssnano');
+var htmltidy    = require('gulp-htmltidy');
 
 var BROWSERS          = ["last 2 versions", "> 5% in US", "ie 11"];
 
@@ -146,9 +147,10 @@ gulp.task('dist:move-html', function() {
               var styles = attr.split(";");
 
               attr = attr.replace(/url\('images\//g, "url('~/images/").replace(/url\("images\//g, "url(\"~/images/");
+              return attr;
             }
 
-            return attr;
+            return null;
           };
           $('*').attr("style", stylesRelative);
 
@@ -166,38 +168,13 @@ gulp.task('dist:move-html', function() {
       }))
     .pipe(replace('<!DOCTYPE html>', ''))
     .pipe(replace(/(\n|\r|  )/g, ''))
-    .pipe(replace(/<([/]?)([a-zA-Z]*)[^>]*([/]?)>/g, function(search, openSlash, tag, closeSlash) {
-      tag = tag.toLowerCase();
-      var isVoidElement = voidElements.indexOf(tag) > -1;
-      var isOpenTag = !openSlash;
-      var isCloseTag = !!closeSlash || !!openSlash;
-      var isEmptyElement = false;
-
-      isEmptyElement = isEmptyElement || (tag == "script" && search.indexOf("src=") > -1);
-
-      if (isOpenTag) {
-        depth++;
-      }
-      if (isCloseTag || isVoidElement) {
-        depth--;
-      }
-
-      if (!isEmptyElement) 
-      {
-        if (isCloseTag) {
-          if (depth > 0) {
-            search = "  ".repeat(depth) + search;
-          }
-          search = "\n" + search;
-        }
-
-        search += "\n";
-        if (depth > 0) {
-          search += "  ".repeat(depth);
-        }
-      }
-      
-      return search;
+    .pipe(htmltidy({
+      doctype: 'html5',
+      hideComments: true,
+      indent: true,
+      wrap: 0,
+      doctype: "omit",
+      "show-body-only": true
     }))
     .pipe(gulp.dest('./dist/prepared/'));
 });

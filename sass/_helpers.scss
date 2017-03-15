@@ -1,13 +1,39 @@
-$screen-xs-min:                  480px !default;
-$screen-sm-min:                  768px !default;
-$screen-md-min:                  970px !default;
+// Grids and Breakpoints
+$grid-gutter-width:   6px;
 
-$color-brand-red: #D92231;
-$color-white: #fff;
-$color-gray-33: #333333;
+$screen-xs-min:       480px;
+$screen-sm-min:       768px;
+$screen-md-min:       970px;
 
-$font : 'Roboto', sans-serif;
-$font-secondary : 'Roboto Condensed', sans-serif;
+// Primary Colours
+$color-brand-red:   #D92231;
+$color-white:       #fff;
+$color-gray-33:     #333333;
+
+$xerox-border-dc:     1px solid #dcdcdc;
+
+// Grays
+$xerox-eb:          #ebebeb;
+
+// Secondary Colours
+$xerox-violet:      #9B2583;
+$xerox-blue:        #2895D5;
+$xerox-green:       #6DAF3D;
+$xerox-gold:        #FD9F13;
+$xerox-orange:      #E67600;
+
+// Xerox Font Families
+$font:                'Roboto', sans-serif;
+$font-secondary:      'Roboto Condensed', sans-serif;
+
+// Xerox Font Weights
+$thin-weight:         100;
+$light-weight:        300;
+$reg-weight:          400;
+$med-weight:          500; // for roboto only
+$bold-weight:         700;
+
+// Breakpoints
 
 @mixin breakpoint($point)
 {
