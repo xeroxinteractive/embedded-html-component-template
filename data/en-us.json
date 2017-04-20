@@ -1,0 +1,9 @@
+{
+    "id": "xrx-custom-component",
+
+    "title": "This is a title",
+    "paragraph": "This is a paragraph",
+
+    "img_src": "images/sample-image.png",
+    "img_alt": "This is a printer"
+}

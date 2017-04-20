@@ -12,14 +12,21 @@ var cheerio     = require('gulp-cheerio');
 var replace     = require('gulp-replace');
 var rename      = require("gulp-rename");
 var cssnano     = require('gulp-cssnano');
+var mustache    = require('gulp-mustache');
 var htmltidy    = require('gulp-htmltidy');
+var flatmap     = require('gulp-flatmap');
+var filter      = require('gulp-filter');
+var uglify      = require('gulp-uglify');
+var debug       = require('gulp-debug');
+var clone       = require('gulp-clone');
+var cloneSink   = clone.sink();
 
-var BROWSERS          = ["last 2 versions", "> 5% in US", "ie 11"];
+var BROWSERS    = ["last 2 versions", "> 5% in US", "ie 11"];
 
 /* ------------------------------------------------- */
 
 gulp.task('clean', function () {
-    return gulp.src(['./dist', './dist.zip', './css'], {read: false})
+    return gulp.src(['./dist', './dist.zip', './css', './*.html'], {read: false})
         .pipe(clean());
 });
 
@@ -38,7 +45,7 @@ gulp.task('watch:lint', function() {
 /* ------------------------------------------------- */
  
 gulp.task('sass', function () {
-  return gulp.src('./sass/**/*.scss')
+  return gulp.src('./sass/**/*.{scss,sass}')
     .pipe(sass().on('error', gutil.log))
     .pipe(cssnano({
       zindex: false,
@@ -65,12 +72,42 @@ gulp.task('sass', function () {
 });
  
 gulp.task('watch:sass', function () {
-  gulp.watch('./sass/**/*.scss', ['sass']);
+  gulp.watch('./sass/**/*.{scss,sass}', ['sass']);
 });
 
 /* ------------------------------------------------- */
 
-gulp.task('watch', ['sass', 'watch:sass', 'lint', 'watch:lint']);
+gulp.task('mustache', function () {
+  return gulp.src('./mustache/*.mustache')
+    .pipe(mustache("./data/en-us.json"))
+    .pipe(rename({extname: ".html"}))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('mustache:langs', function () {
+  return gulp.src("./data/*.json")
+  .pipe(flatmap(function(stream, file){
+    var data = JSON.parse(file.contents.toString('utf-8'));
+    var name = file.relative.replace(".json", "");
+    return gulp.src('./mustache/*.mustache')
+      .pipe(mustache(data))
+      .pipe(rename(function(path){
+        path.extname = ".html";
+        path.basename += "-" + name;
+      }))
+      .pipe(gulp.dest('./'));
+  })); 
+  
+  
+});
+ 
+gulp.task('watch:mustache', function () {
+  gulp.watch(['./mustache/**/*.mustache', './data/*.json'], ['mustache', 'mustache:langs']);
+});
+
+/* ------------------------------------------------- */
+
+gulp.task('watch', ['mustache', 'mustache:langs', 'watch:mustache', 'sass', 'watch:sass', 'lint', 'watch:lint']);
 
 /* ------------------------------------------------- */
 
@@ -99,18 +136,30 @@ gulp.task('dist', function(cb) {
 gulp.task('dist:build', function(cb) {
   runSequence(
     ['clean'],
-    ['sass', 'lint'],
+    ['mustache:langs', 'sass', 'lint'],
     ['dist:move-source', 'dist:zip-assets', 'dist:move-html'],
     cb);
 });
 
 gulp.task('dist:move-source', function() {
-  return gulp.src(['./**/*', '!./node_modules/', '!./node_modules/**/*', '!./css', '!./css/**/*'])
+  return gulp.src(['./**/*', '!./node_modules/', '!./node_modules/**/*', '!./css', '!./css/**/*', '!./*.html'])
     .pipe(gulp.dest('./dist/source'));
 });
 
 gulp.task('dist:zip-assets', function() {
-  return gulp.src(['./css/**/*', './images/**/*', './js/**/*', './contrib/**/*', '!./**/*.md'], {'base' : './'})
+  const jsFilter = filter(['**/*.js', '!**/*.min.js'], {restore: true});
+
+  return gulp.src(['./css/**/*', './images/**/*', './js/**/*', './contrib/**/*', '!./**/*.md', , '!./**/component-dev.*'], {'base' : './'})
+    .pipe(debug({title: 'pre:'}))
+    .pipe(jsFilter)
+      .pipe(debug({title: 'uglify-pre:'}))
+      .pipe(cloneSink)
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(uglify())
+      .pipe(cloneSink.tap()) 
+      .pipe(debug({title: 'uglify-post:'}))
+    .pipe(jsFilter.restore)
+    .pipe(debug({title: 'post:'}))
     .pipe(zip('assets.zip'))
     .pipe(gulp.dest('./dist/prepared/'));
 });
@@ -154,20 +203,19 @@ gulp.task('dist:move-html', function() {
           };
           $('*').attr("style", stylesRelative);
 
-          $('head').children().prependTo("html");
-          $('body').children().appendTo("html");
+          $('html link[href]').prependTo(".xrx-wrapper");
+          $('html script[src]').appendTo(".xrx-wrapper");
+          $('.xrx-wrapper').appendTo("body");
+          $('.xrx-wrapper').removeAttr("class").removeAttr("id");
+          $('.xrx-container').remove();
           $('head').remove();
-          $('body').remove();
-          $('html').replaceWith("<div>" + $('html').html() + "</div>")
 
           return this;
       },
       "parserOptions": {
         "decodeEntities" : false
       }
-      }))
-    .pipe(replace('<!DOCTYPE html>', ''))
-    .pipe(replace(/(\n|\r|  )/g, ''))
+    }))
     .pipe(htmltidy({
       doctype: 'html5',
       hideComments: true,

@@ -1,0 +1,94 @@
+@import 'base/helpers';
+
+.xrx-embedded-nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: $color-gray-33;
+
+    &:after {
+        clear: both;
+        content: "";
+        display: block;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        li {
+            display: block;
+            padding: 0;
+            margin: 0;
+            float: left;
+            a {
+                display: block;
+                color: $color-white;
+                padding: 10px;
+                text-decoration: none;
+                &:hover, &:focus {
+                    background: $color-white;
+                    color: $color-brand-red;
+                }
+
+                .node-type-landing & {
+                    &#node-type-landing {
+                        background: $color-white;
+                        color: $color-brand-red;
+                    }
+                }
+
+                .node-type-topic & {
+                    &#node-type-topic {
+                        background: $color-white;
+                        color: $color-brand-red;
+                    }
+                }
+            }
+        }
+    }
+}
+
+body {
+    background-color: rgba(0,0,0,.05);
+    margin: 80px auto 0 auto;
+    
+    .xrx-container {
+        margin: auto;
+        max-width: 1200px;
+        background-color: rgba(0,0,0,.05);
+        padding: 0;
+        transition: padding .1s ease-in-out;
+
+        .xrx-wrapper {
+            background-color: #fff;
+            margin: 0;
+            width: 100%;
+            transition: width .1s ease-in-out, margin .1s ease-in-out;
+        }
+    }
+
+    &.node-type-landing {
+        padding: 0 10px;
+
+        @include breakpoint(screen-sm){
+            padding: 0;
+        }
+    }
+
+    &.node-type-topic .xrx-container {
+        padding: 0 15px;
+
+        @include breakpoint(screen-md){
+            padding: 0;
+        }
+
+        .xrx-wrapper {
+            @include breakpoint(screen-md){
+                margin-left: 13.66667%;
+                width: 58.33333%;
+                margin-right: 25%;
+            }
+        }
+    }
+}

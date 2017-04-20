@@ -1,0 +1,9 @@
+{
+    "id": "xrx-custom-component",
+
+    "title": "This is a title in french",
+    "paragraph": "This is a paragraph in french",
+
+    "img_src": "images/sample-image.png",
+    "img_alt": "This is a printer in french"
+}
