@@ -24,7 +24,7 @@ This repo is a gulp project and it provides a number of helpful commands to help
 * `mustache/base/head.mustache` - Add your CSS references here
 * `mustache/base/foot.mustache` - Add your JS references here
 * `data/` - All your JSON data to feed into mustache should be here. 
-* `component-dev.*` - Ignore these files, they're there to make locale development easier
+* `component-dev.*` - Ignore these files, they're there to make local development easier
 
 ### Customisations
 Feel free to customise this project as you see fit, if you prefer to use less, coffeescript, typescript, whatever we're not too concerned so long as the deliverable remains to the same standard. 
@@ -40,7 +40,7 @@ The `gulp dist` task creates a zip and html file ready for uploading into Drupal
 * As we don't require `head`, `body`, `html` or doctype they will be removed
 
 ## General Guidance
-* All component should be wrapped in [a unique class or id](https://github.com/xeroxinteractive/embedded-html-component-template/blob/master/mustache/partials/component.mustache#L1) or id referencing the agency that wrote the code allowing css to be prefixed preventing it impacting the wider site design.
+* All components should be wrapped in [a unique class or id](https://github.com/xeroxinteractive/embedded-html-component-template/blob/master/mustache/partials/component.mustache#L1) or id referencing the agency that wrote the code allowing css to be prefixed preventing it impacting the wider site design.
 * All css should [make use of the above prefix](https://github.com/xeroxinteractive/embedded-html-component-template/blob/master/sass/core.scss#L1) and should ideally be written in sass or less for easy final editing and tweaks
 * Source code must be supplied. We sometimes need to make final tweaks and changes when integrating, if we’re only supplied compiled & minifed CSS and Javascript this makes it near enough impossible. 
 * No inline javascript, there’s just no good reason for it. The one exception is if you need to set some javascript variables, but it must have absolutely no external dependencies and even then I would prefer simply using data attributes.
