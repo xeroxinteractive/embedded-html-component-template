@@ -1,13 +1,11 @@
 @import 'base/helpers';
 
 .xrx-custom-component {
-    background-color: transparent;
-}
-.xrx-custom-component-thing {
-    background-color: transparent;
-    color: $xerox-violet;
+    h1 {
+        color: $xerox-violet;
 
-    @include breakpoint(screen-md) {
-        color: $xerox-green;
+        @include breakpoint(screen-md) {
+            color: $xerox-green;
+        }
     }
 }
