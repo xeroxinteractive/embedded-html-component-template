@@ -6,7 +6,7 @@ Throughout you will find README.md files providing guidance for specific element
 
 ## General Guidance
 
-Custom HTML 5 Components should only be developed where features or functionality will signficantly diverge from that already available on the Drupal platform already. 
+Custom HTML 5 Components should only be developed where features or functionality will significantly diverge from that already available on the Drupal platform already. 
 
 ### Minimal difference
 If the difference between what has been designed and what already exists is minimal there are two choices:
@@ -17,13 +17,13 @@ If the difference between what has been designed and what already exists is mini
 Custom components should not be built for components that do not differ significantly 
 
 ### Significant difference 
-If the designed component is signficantly different from what exists already there are three choices:
+If the designed component is significantly different from what exists already there are three choices:
 
 1. Does a component exist that serves the same purpose already exist, and if so should that be updated to this new design? - *Update the existing Drupal component*
 2. Will this component be used in numerous places across the site? - *Build a new Drupal component*
 3. Is this component a one off to only be used in a limited number of places? - **This is the only case in which a Custom Component should be developed**
 
-The workflow in maintaining them is signficantly more complex and as a result they should be used sparingly. 
+The workflow in maintaining them is significantly more complex and as a result they should be used sparingly. 
 
 ## Quick start
 
@@ -99,5 +99,5 @@ The final deliverable will be reviewed technically and aesthetically. In either 
 ## Aesthetic Criteria
 
 1. Does it accurately represent the Xerox brand?
-2. Does it match the origional design? 
+2. Does it match the original design? 
 3. Does is closely resemble any other component, should it have used an existing component? 
