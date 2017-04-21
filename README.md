@@ -4,11 +4,11 @@ This repo acts as both a base template and guidance for developing HTML componen
 
 Throughout you will find README.md files providing guidance for specific elements.
 
-## General Guidance
+# General Guidance
 
 Custom HTML 5 Components should only be developed where features or functionality will significantly diverge from that already available on the Drupal platform already. 
 
-### Minimal difference
+## Minimal difference
 If the difference between what has been designed and what already exists is minimal there are two choices:
 
 1. Convert the designed component to use the styling already available and not have to create a custom component 
@@ -16,7 +16,7 @@ If the difference between what has been designed and what already exists is mini
 
 Custom components should not be built for components that do not differ significantly 
 
-### Significant difference 
+## Significant difference 
 If the designed component is significantly different from what exists already there are three choices:
 
 1. Does a component exist that serves the same purpose already exist, and if so should that be updated to this new design? - *Update the existing Drupal component*
@@ -24,6 +24,24 @@ If the designed component is significantly different from what exists already th
 3. Is this component a one off to only be used in a limited number of places? - **This is the only case in which a Custom Component should be developed**
 
 The workflow in maintaining them is significantly more complex and as a result they should be used sparingly. 
+
+## Review
+
+The final deliverable will be reviewed technically and aesthetically. In either case it can be rejected.
+
+### Technical Criteria
+
+1. Does it follow the standards and guidance listed below?
+2. Has full source code with source assets been supplied?
+3. Is the code well organised and properly structured?
+
+### Aesthetic Criteria
+
+1. Does it accurately represent the Xerox brand?
+2. Does it match the original design? 
+3. Does is closely resemble any other component, should it have used an existing component? 
+
+# Technical Guidance
 
 ## Quick start
 
@@ -85,19 +103,3 @@ The `gulp dist` task creates a zip and html file ready for uploading into Drupal
 * Wherever possible CSS animations should be used over javascript animations for improved device performance.
 * Ideally gulp / grunt processes should be used.
 * Paths to local files should be relative and they will be converted to be Drupal compatible during the `gulp dist` process
-
-# Final Words
-
-The final deliverable will be reviewed technically and aesthetically. In either case it can be rejected.
-
-## Technical Criteria
-
-1. Does it follow the standards and guidance listed below?
-2. Has full source code/assets been supplied?
-3. Is the code well organised and properly structured?
-
-## Aesthetic Criteria
-
-1. Does it accurately represent the Xerox brand?
-2. Does it match the original design? 
-3. Does is closely resemble any other component, should it have used an existing component? 
